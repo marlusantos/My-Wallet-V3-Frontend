@@ -80,5 +80,6 @@
     "feePerByte": 2
   },
   "showMobileLogin": true,
+  "disabledForFork": true,
   "network": "bitcoin"
 }

@@ -28,7 +28,7 @@ function coinify (Env, BrowserHelper, $timeout, $q, $state, $uibModal, $uibModal
       return service.exchange.kycs.sort((a, b) => a.createdAt < b.createdAt);
     },
     get userCanTrade () {
-      return !service.exchange.user || service.exchange.profile.canTrade;
+      return !service.disabledForFork && (!service.exchange.user || service.exchange.profile.canTrade);
     },
     get balanceAboveMin () {
       return service.sellMax && service.sellMax > service.limits.blockchain.minimumInAmounts['BTC'];
@@ -46,7 +46,8 @@ function coinify (Env, BrowserHelper, $timeout, $q, $state, $uibModal, $uibModal
       let reason;
       let { profile, user } = service.exchange;
 
-      if (user && !profile.canTrade) reason = profile.cannotTradeReason;
+      if (service.disabledForFork) reason = 'disabled_for_fork';
+      else if (user && !profile.canTrade) reason = profile.cannotTradeReason;
       else if (!user) reason = 'user_needs_account';
       else reason = 'has_remaining_buy_limit';
 
@@ -56,7 +57,8 @@ function coinify (Env, BrowserHelper, $timeout, $q, $state, $uibModal, $uibModal
       let reason;
       let { profile, user } = service.exchange;
 
-      if (user && !profile.canTrade) reason = profile.cannotTradeReason;
+      if (service.disabledForFork) reason = 'disabled_for_fork';
+      else if (user && !profile.canTrade) reason = profile.cannotTradeReason;
       else if (service.balanceAboveMin) reason = 'can_sell_remaining_balance';
       else if (!service.balanceAboveMin) reason = 'not_enough_funds_to_sell';
       else if (service.balanceAboveMax) reason = 'can_sell_max';
@@ -94,6 +96,7 @@ function coinify (Env, BrowserHelper, $timeout, $q, $state, $uibModal, $uibModal
     return Env.then(env => {
       coinify.api.sandbox = !env.isProduction;
       coinify.partnerId = env.partners.coinify.partnerId;
+      service.disabledForFork = env.disabledForFork;
       if (coinify.trades) Exchange.watchTrades(coinify.trades);
       coinify.monitorPayments();
     });

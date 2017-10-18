@@ -1589,6 +1589,9 @@
       "CHECK_STATUS": "Check Status",
       "FINISH": "Finish",
       "CANCEL": "Cancel"
+    },
+    "disabled_for_fork": {
+      "EXPLAIN": "@:BTC_DISABLED_FORK.REASON"
     }
   },
   "UNOCOIN": {
@@ -1600,6 +1603,9 @@
     },
     "user_can_trade": {
       "EXPLAIN": "Your remaining buy limit is {{::max}} {{::curr}}"
+    },
+    "disabled_for_fork": {
+      "EXPLAIN": "@:BTC_DISABLED_FORK.REASON"
     }
   },
   "EXCHANGE": {
@@ -1629,6 +1635,9 @@
     "PIN_CODE": "Pin Code",
     "BANK_ACCOUNT_NUMBER": "Bank Account Number",
     "IFSC": "IFSC"
+  },
+  "BTC_DISABLED_FORK": {
+    "REASON": "BTC has temporarily been disabled because of a network fork."
   },
   "TESTNET_WARNING": "Warning! This is a Testnet wallet. Your coins have no value here.",
   "YOUR_BALANCES": "YOUR BALANCES",
@@ -1712,6 +1721,9 @@
         "BODY": "This trade has failed. Any funds broadcast from your wallet, will be returned minus the transaction fee. Please return to the exchange tab to start a new trade",
         "STATE": "Failed"
       }
+    },
+    "disabled_for_fork": {
+      "EXPLAIN": "@:BTC_DISABLED_FORK.REASON"
     }
   },
   "UNOCOIN_AFTER_TRANSFER": "After you have transferred funds to Unocoin, please enter your IMPS/NEFT/RTGS/CHEQUE reference number",

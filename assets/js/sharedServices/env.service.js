@@ -57,6 +57,8 @@ function Env ($rootScope, $location, $q, $http) {
 
       env.bcash = res.bcash;
 
+      env.disabledForFork = res.disabledForFork;
+
       defer.resolve(env);
     }
   );

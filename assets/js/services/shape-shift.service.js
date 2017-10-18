@@ -16,6 +16,14 @@ function ShapeShift (Wallet, modals, MyWalletHelpers, Ethereum, Env, BrowserHelp
       let state = Wallet.my.wallet.accountInfo.stateCodeGuess;
       return !state || this.statesWhitelist === '*' || this.statesWhitelist.indexOf(state) > -1;
     },
+    get userCanTrade () {
+      return !service.disabledForFork;
+    },
+    get tradeReason () {
+      let reason;
+      if (service.disabledForFork) reason = 'disabled_for_fork';
+      return reason;
+    },
     get userHasAccess () {
       if (Wallet.my.wallet == null) return false;
       return this.qaDebugger || Ethereum.userHasAccess && !this.isInBlacklistedCountry && this.isInWhitelistedState;
@@ -85,6 +93,7 @@ function ShapeShift (Wallet, modals, MyWalletHelpers, Ethereum, Env, BrowserHelp
 
   Env.then((options) => {
     let { shapeshift, qaDebugger } = options;
+    service.disabledForFork = options.disabledForFork;
     if (shapeshift && !isNaN(shapeshift.rolloutFraction)) {
       service.countriesBlacklist = shapeshift.countriesBlacklist || [];
       service.statesWhitelist = shapeshift.statesWhitelist || [];

@@ -8,12 +8,13 @@ function unocoin ($q, Alerts, modals, Env, Exchange, MyWallet) {
       return MyWallet.wallet.external.unocoin;
     },
     get userCanTrade () {
-      return !service.getPendingTrade();
+      return !service.disabledForFork && !service.getPendingTrade();
     },
     get buyReason () {
       let reason;
 
-      if (!service.userCanTrade) reason = 'awaiting_trade_completion';
+      if (service.disabledForFork) reason = 'disabled_for_fork';
+      else if (!service.userCanTrade) reason = 'awaiting_trade_completion';
       else reason = 'user_can_trade';
 
       return reason;
@@ -42,6 +43,7 @@ function unocoin ($q, Alerts, modals, Env, Exchange, MyWallet) {
         env.partners.unocoin.production ? 'production' : 'staging'
       );
       unocoin.api.production = env.partners.unocoin.production;
+      service.disabledForFork = env.disabledForFork;
       if (unocoin.trades) service.watchTrades(unocoin.trades);
       unocoin.monitorPayments();
     });
