@@ -24,6 +24,11 @@ function ShapeShift (Wallet, modals, MyWalletHelpers, Ethereum, Env, BrowserHelp
       if (service.disabledForFork) reason = 'disabled_for_fork';
       return reason;
     },
+    get tradeLaunchOptions () {
+      let reason = service.tradeReason;
+      if (reason === 'disabled_for_fork') return { 'LEARN_MORE': modals.openBtcForkInfo };
+      return {};
+    },
     get userHasAccess () {
       if (Wallet.my.wallet == null) return false;
       return this.qaDebugger || Ethereum.userHasAccess && !this.isInBlacklistedCountry && this.isInWhitelistedState;
@@ -90,6 +95,12 @@ function ShapeShift (Wallet, modals, MyWalletHelpers, Ethereum, Env, BrowserHelp
   service.signupForShift = (email, state) => {
     BrowserHelper.safeWindowOpen(`https://docs.google.com/forms/d/e/1FAIpQLSd0r6NU82pQNka87iUkQJc3xZq6y0UHYHo09eZH-6SQZlTZrg/viewform?entry.1192956638=${email}&entry.387129390=${state}`);
   };
+
+  service.trading = () => ({
+    reason: service.tradeReason,
+    isDisabled: !service.userCanTrade,
+    launchOptions: service.tradeLaunchOptions
+  });
 
   Env.then((options) => {
     let { shapeshift, qaDebugger } = options;

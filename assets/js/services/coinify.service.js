@@ -70,7 +70,8 @@ function coinify (Env, BrowserHelper, $timeout, $q, $state, $uibModal, $uibModal
       let reason = service.buyReason;
       let { user, profile } = service.exchange;
 
-      if (reason === 'has_remaining_buy_limit' && user && +profile.level.name < 2) return { 'KYC': service.openPendingKYC };
+      if (reason === 'disabled_for_fork') return { 'LEARN_MORE': modals.openBtcForkInfo };
+      else if (reason === 'has_remaining_buy_limit' && user && +profile.level.name < 2) return { 'KYC': service.openPendingKYC };
       else if (reason === 'awaiting_first_trade_completion' && service.getPendingTrade()) return { 'FINISH': service.openPendingTrade, 'CANCEL': service.cancelTrade };
       else if (reason === 'awaiting_first_trade_completion' && service.getProcessingTrade()) return { 'CHECK_STATUS': service.openProcessingTrade };
       else if (reason === 'after_first_trade') return { 'WHY': service.openTradingDisabledHelper };
@@ -79,7 +80,8 @@ function coinify (Env, BrowserHelper, $timeout, $q, $state, $uibModal, $uibModal
       let reason = service.sellReason;
       let { user, profile } = service.exchange;
 
-      if (reason === 'can_sell_max' && user && profile.level && +profile.level.name < 2) return { 'KYC': service.openPendingKYC };
+      if (reason === 'disabled_for_fork') return { 'LEARN_MORE': modals.openBtcForkInfo };
+      else if (reason === 'can_sell_max' && user && profile.level && +profile.level.name < 2) return { 'KYC': service.openPendingKYC };
       else if (reason === 'not_enough_funds_to_sell') return { 'REQUEST': modals.openRequest, 'BUY': service.goToBuy };
       else if (reason === 'awaiting_first_trade_completion' && service.getPendingTrade()) return { 'FINISH': service.openPendingTrade, 'CANCEL': service.cancelTrade };
       else if (reason === 'awaiting_first_trade_completion' && service.getProcessingTrade()) return { 'CHECK_STATUS': service.openProcessingTrade };

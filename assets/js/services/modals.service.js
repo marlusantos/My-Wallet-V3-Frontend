@@ -287,5 +287,10 @@ function modals ($rootScope, $state, $uibModal, $ocLazyLoad) {
     })
   );
 
+  service.openBtcForkInfo = () => open({
+    templateUrl: 'partials/btc-fork-warning.pug',
+    windowClass: 'bc-modal prio initial'
+  });
+
   return service;
 }

@@ -20,8 +20,7 @@ function ShiftCreateController (Env, AngularHelper, $translate, $scope, $q, curr
   let UPPER_LIMIT;
   Env.then(env => UPPER_LIMIT = env.shapeshift.upperLimit || 500);
 
-  this.canTrade = ShapeShift.userCanTrade;
-  this.tradeReason = ShapeShift.tradeReason;
+  this.trading = ShapeShift.trading;
 
   this.from = this.wallet || Wallet.getDefaultAccount();
   this.to = this.wallet ? Wallet.getDefaultAccount() : Ethereum.defaultAccount;
@@ -135,7 +134,7 @@ function ShiftCreateController (Env, AngularHelper, $translate, $scope, $q, curr
     return $q.resolve(this.from.getAvailableBalance(fee)).then(fetchSuccess, fetchError);
   };
 
-  if (this.canTrade) {
+  if (!this.trading().isDisabled) {
     $scope.$watch('state.input.curr', () => getRate().then($scope.getAvailableBalance));
     $scope.$watch('state.output.curr', () => getRate().then($scope.getAvailableBalance));
     $scope.$watch('$ctrl.from.balance', (n, o) => n !== o && $scope.getAvailableBalance());

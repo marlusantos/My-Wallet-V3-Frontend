@@ -21,8 +21,8 @@ function unocoin ($q, Alerts, modals, Env, Exchange, MyWallet) {
     },
     get buyLaunchOptions () {
       let reason = service.buyReason;
-
-      if (reason === 'awaiting_trade_completion') return { 'FINISH': service.openPendingTrade };
+      if (reason === 'disabled_for_fork') return { 'LEARN_MORE': modals.openBtcForkInfo };
+      else if (reason === 'awaiting_trade_completion') return { 'FINISH': service.openPendingTrade };
     },
     buy,
     init,
